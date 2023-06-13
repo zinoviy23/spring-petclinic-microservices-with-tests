@@ -166,3 +166,10 @@ For pull requests, editor preferences are available in the [editor config](.edit
 
 [Configuration repository]: https://github.com/spring-petclinic/spring-petclinic-microservices-config
 [Spring Boot Actuator Production Ready Metrics]: https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-metrics.html
+
+## Integration tests
+`Start All`
+
+Update ports in [http-client.env.json](integration-tests/http-client.env.json)
+
+`Run Tests`

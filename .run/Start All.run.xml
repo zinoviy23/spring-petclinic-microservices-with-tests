@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Start All" type="CompoundRunConfigurationType">
+    <toRun name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="ConfigServerApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="CustomersServiceApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="DiscoveryServerApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="SpringBootAdminApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="VetsServiceApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="VisitsServiceApplication" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

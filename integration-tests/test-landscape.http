@@ -1,0 +1,83 @@
+### All owners from customer services
+GET http://{{customer-service}}/owners
+
+> {%
+    import 'test-scripts/common-assertions' // execute common tests
+    import {selectUser} from 'test-scripts/utils' // use util functions
+
+    const user = selectUser(response.body)
+    client.global.set("userId", user.id)
+%}
+
+### Get owner from gateway
+GET http://{{gateway}}/api/gateway/owners/{{userId}}
+
+> {%
+    import 'test-scripts/common-assertions'
+    import {selectPet} from "test-scripts/utils";
+
+    client.test("The same user", () => {
+        client.assert(response.body.id == client.global.get("userId"))
+    })
+
+    const pet = selectPet(response.body);
+    client.global.set("petId", pet.id);
+%}
+
+### Get Pet
+GET http://{{customer-service}}/owners/{{userId}}/pets/{{petId}}
+
+> {%
+    import 'test-scripts/common-assertions'
+
+    client.test("The same pet", () => {
+        client.assert(response.body.id == client.global.get("petId"));
+    })
+%}
+
+### Create visit in visit service
+< {%
+    import {currentDate, generateDescription} from 'test-scripts/utils'
+
+    request.variables.set("date", currentDate())
+    request.variables.set("description", generateDescription())
+%}
+POST http://{{visit-service}}/owners/{{userId}}/pets/{{petId}}/visits
+Content-Type: application/json
+
+{
+  "petId": {{petId}},
+  "description": "{{description}}",
+  "date": "{{date}}"
+}
+
+> {%
+    import 'test-scripts/common-assertions'
+    import {normalize} from 'test-scripts/utils'
+
+    client.test("The same pet", () => {
+        client.assert(response.body.petId == client.global.get("petId"));
+    })
+
+    client.test("The same date", () => {
+        client.assert(response.body.date == request.variables.get("date"))
+    })
+
+    client.test("The same description", () => {
+        client.assert(response.body.description == normalize(request.variables.get("description")))
+    })
+
+    client.global.set("visitId", response.body.id)
+%}
+
+### Visit available
+GET http://{{visit-service}}/owners/{{userId}}/pets/{{petId}}/visits
+
+> {%
+    import 'test-scripts/common-assertions'
+    import {hasId} from 'test-scripts/utils'
+
+    client.test("Has visit", () => {
+        client.assert(hasId(response.body, client.global.get("visitId")))
+    })
+%}
